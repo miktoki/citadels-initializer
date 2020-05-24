@@ -7,11 +7,12 @@ class Character{
 		this.minPlayers = minPlayers
 	}
 	canBeUsed(nPlayers){
+		console.log(this.name, nPlayers, this.minPlayers, nPlayers>=this.minPlayers)
 		return nPlayers>=this.minPlayers;
 	}
 
 	get info(){
-		return this.abilities.join('\n');
+		return (this.abilities || []).join('\n');
 	}
 }
 class UniqueDistrict{
@@ -78,8 +79,9 @@ class CitadelsData {
 		/*8:*/
 		new Character("Warlord", [`+1 coin per ${redSquare}`, `${bomb}${houses}, pay 1 less than its building cost`], 8),
 		new Character("Marshal", [`+1 coin per ${redSquare}`, `Seize ${houses} with cost 3 or less. Pay player building cost.`], 8),
+		new Character("Diplomat", [`+1 coin per ${redSquare}`, `${rotate} ${houses} in opponents city with a ${houses} in own city. Pay player difference in ${coin}`], 8),
 		/*9:*/
-		new Character("Queen", [`+3 ${coin} if sitting next to rank 4 ${onePerson}`], 9),
+		new Character("Queen", [`+3 ${coin} if sitting next to rank 4 ${onePerson}`], 9, 5),
 		new Character("Artist", [`Beautify up to two ${houses} by adding ${coin} on top of ${houses} from own stash. ${houses} cost +1. ${houses} can only be beautified once.`], 9, 5),
 		new Character("Tax Collector", [`After any player builds ${houses}, player places 1${coin} as tax on Tax Collector token if possible.`, `Take all ${coin} from Tax Collector`, `Not charged tax`], 9),
 	]
@@ -369,6 +371,7 @@ class CitadelsGame{
 
 	get_character(rank){
 		let character = this.preset ? this.cd[this.preset.Characters[rank-1]] : this.draw(this.cd[rank]);
+		console.log("preset", this.preset, "rank:", rank,"char",character, this.preset.Characters[rank-1])
 		if (!character.canBeUsed(this.p)){
 			const alternatives = this.cd[rank].filter(c => c.name!=character.name);
 			character = this.draw(alternatives);
@@ -409,7 +412,6 @@ class CitadelsGame{
 		let chars = this.choose_characters();
 		let char_div = this.genUI(chars, "Characters");
 		let dists = this.choose_districts();
-		console.log("dists", dists);
 		let dist_div = this.genUI(dists, "Districts");
 		let content_div = document.getElementsByClassName("content")[0];
 		content_div.innerHTML = ``;
@@ -460,7 +462,6 @@ class CitadelsGame{
 		let div = this.createElement('div',title);
 		let h2 = this.createElement('h2',title, div, title);
 		for (const [i, obj] of objs.entries()){
-			console.log("--", obj.name,'--', obj.info);
 			let p = this.createElement('p', title, div, `${i+1}. `.padStart(3,' ')+obj.name, obj.info);
 		}
 		return div;
