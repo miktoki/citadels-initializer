@@ -47,9 +47,9 @@ p {
   color: $primary-light;
   font-size: $base-size;
   padding: $base-size/2 12px;
-  margin: 0 auto;
+  margin: 0;
   border-radius: 10px;// 30px / 45px;
-  max-width: 150px;
+  width: auto;
 }
 p:hover {
   background-color: $secondary-dark;
@@ -122,6 +122,7 @@ input[type=text] {
     flex-direction: column;
     //justify-content: space-between;
   }
+
 }
 // p{
 //   padding: 3px;
@@ -130,21 +131,36 @@ input[type=text] {
 //   margin: 35px 0;
 // }
 .focused, .focused * {
-  background: $primary-red !important;
-  color: $primary-light !important; 
+  background: $secondary-dark !important;
+  color: $secondary-light !important;
+  text-shadow: 1px 1px $tertiary-dark;
 }
 
+@media (min-width: 900px){
+  p { max-width: 250px; }
+  .content div {
+      width: 300px;
+  }
+}
 
 @media (max-width: 900px) {
+  // multiline header
   .header {
     display: flex;
     flex-direction: column;
   }
+  .content{
+    // width: 95%;
+    div {width: 50%; margin:0%; }
+  }
+  p {max-width: 100%;}
+
 }
 @media (max-width: 560px) {
+
   .content{
     flex-direction: column;
-    div { margin:0; }
+    div {width: 100%; margin:0; }
   }
   h2 {
     font-size: $base-size-tiny*1.4;
