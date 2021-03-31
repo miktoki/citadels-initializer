@@ -35,6 +35,9 @@
         
         <div class="box content">
         </div>
+        <div id="drawInfo" class="box">
+            <p id="drawInfoText"></p>
+        </div>
         
         <div class="box footer">
             <p>State id: <input type="text" id="seedbox" name="seed"
